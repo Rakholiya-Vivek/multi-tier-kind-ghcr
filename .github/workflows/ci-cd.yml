@@ -1,8 +1,8 @@
 name: CI/CD to GHCR and KIND (self-hosted deploy)
 
 on:
-  push:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
   workflow_dispatch:
 
 env:
