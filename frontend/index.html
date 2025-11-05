@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi-Tier App</title>
+</head>
+<body>
+  <h1>Welcome to Multi-Tier App (Frontend)</h1>
+  <p>Backend API Response:</p>
+  <div id="response"></div>
+  <script>
+    fetch("/api").then(res => res.json()).then(data => {
+      document.getElementById("response").textContent = JSON.stringify(data);
+    });
+  </script>
+</body>
+</html>
