@@ -87,16 +87,27 @@ jobs:
       - name: Configure kubeconfig
         run: |
           mkdir -p ~/.kube
-          if [ -f /root/.kube/config ] && [ "$HOME/.kube/config" != "/root/.kube/config" ]; then
-            cp /root/.kube/config ~/.kube/config
+          SRC_CONFIG=""
+          if [ -f /root/.kube/config ]; then
+            SRC_CONFIG="/root/.kube/config"
           elif [ -f /home/ubuntu/.kube/config ]; then
-            cp /home/ubuntu/.kube/config ~/.kube/config
+            SRC_CONFIG="/home/ubuntu/.kube/config"
+          fi
+
+          if [ -n "$SRC_CONFIG" ]; then
+            if [ "$SRC_CONFIG" != "$HOME/.kube/config" ]; then
+              cp "$SRC_CONFIG" ~/.kube/config
+            else
+              echo "Kubeconfig already correct, no copy needed"
+            fi
           else
             echo "No existing kubeconfig found, trying kind get kubeconfig"
             kind get kubeconfig > ~/.kube/config
           fi
+
           kubectl cluster-info
           kubectl get nodes
+      
 
       - name: Login to GHCR
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
