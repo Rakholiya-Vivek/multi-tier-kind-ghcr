@@ -83,6 +83,21 @@ jobs:
         run: |
           which kubectl || (curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl && sudo mv kubectl /usr/local/bin/)
 
+      # 👇 NEW STEP: Load kubeconfig from your Kind cluster
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          if [ -f /root/.kube/config ]; then
+            cp /root/.kube/config ~/.kube/config
+          elif [ -f /home/ubuntu/.kube/config ]; then
+            cp /home/ubuntu/.kube/config ~/.kube/config
+          else
+            echo "No existing kubeconfig found, trying kind get kubeconfig"
+            kind get kubeconfig > ~/.kube/config
+          fi
+          kubectl cluster-info
+          kubectl get nodes
+
       - name: Login to GHCR
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
