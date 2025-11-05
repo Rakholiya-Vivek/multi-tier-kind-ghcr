@@ -106,7 +106,7 @@ jobs:
           kubectl -n multi rollout status deployment/backend --timeout=120s || (echo "backend rollout failed — rolling back" && kubectl -n multi rollout undo deployment/backend && exit 1)
           kubectl -n multi rollout status deployment/frontend --timeout=120s || (echo "frontend rollout failed — rolling back" && kubectl -n multi rollout undo deployment/frontend && exit 1)
 
-      - name: Post-deploy: show pods
+      - name: Post-deploy show pods
         run: |
           kubectl -n multi get pods -o wide
           kubectl -n ingress-nginx get svc -o wide
