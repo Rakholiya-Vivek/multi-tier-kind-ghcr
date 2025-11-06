@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ghcr.io/Rakholiya-Vivek/frontend:latest
+        image: ghcr.io/rakholiya-vivek/frontend:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
